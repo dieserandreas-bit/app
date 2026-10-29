@@ -1,0 +1,42 @@
+# =============================================================================
+# NETLIFY KONFIGURATION FÜR DEN GP TEIL 2 PRÜFUNGSTRAINER (NRW)
+# =============================================================================
+# WICHTIG FÜR DEN UPLOAD AUF NETLIFY:
+# 1. Lade den GESAMTEN Projektordner hoch (oder verbinde ihn über GitHub/Netlify CLI).
+#    Grund: Netlify benötigt den Ordner "netlify/functions", damit dein Gemini-API-Key
+#    zu 100 % unsichtbar auf dem Server bleibt!
+# 2. Netlify veröffentlicht durch "publish = 'public'" automatisch NUR den Ordner "public"
+#    als Webseite im Internet. Dein Server-Code bleibt geschützt.
+# 3. Trage deinen Gemini-API-Key im Netlify-Dashboard ein unter:
+#    Site configuration -> Environment variables -> Key: GEMINI_API_KEY
+# =============================================================================
+
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[build.environment]
+  # GEMINI_API_KEY wird weiterhin streng durch Netlify Secrets Scanning geschützt!
+  # Modellname (GEMINI_MODEL) und Gruppencode-Variable (GROUP_ACCESS_CODE) werden vom
+  # Text-Scanner ausgenommen, damit kein False-Positive-Build-Abbruch entsteht.
+  SECRETS_SCAN_OMIT_KEYS = "GROUP_ACCESS_CODE,GEMINI_MODEL"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Leitet alle /api/gemini/* Anfragen nahtlos an die geschützte Serverless-Function weiter
+[[redirects]]
+  from = "/api/gemini/*"
+  to = "/.netlify/functions/gemini/:splat"
+  status = 200
+  force = true
+
+# Sicherheits- & Datenschutz-Header für alle Seiten (DSGVO-, Suchmaschinen- & KI-Bot-Schutz)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"
+    Permissions-Policy = "camera=(), geolocation=(), payment=()"
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet, noai, noimageai"

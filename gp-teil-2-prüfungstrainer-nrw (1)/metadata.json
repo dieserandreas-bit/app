@@ -1,0 +1,6 @@
+{
+  "name": "GP Teil 2 Prüfungstrainer NRW",
+  "description": "Prüfungstrainer für Elektroniker/-in Energie- und Gebäudetechnik (GP Teil 2 NRW) mit WiSo, Elektro-Theorie, Rechentrainer, VDE 0100-600, CAD, SPS & KI-Prüfer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

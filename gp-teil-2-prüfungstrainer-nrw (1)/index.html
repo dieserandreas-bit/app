@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GP2 Trainer">
+  
+  <!-- Hoster-unabhängiger KI-, Suchmaschinen- & Referrer-Schutz -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noai, noimageai">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="referrer" content="no-referrer">
+
+  <title>GP Teil 2 Prüfungstrainer (WiSo, Elektro, Rechnen, CAD, SPS & KI) – Elektroniker/-in NRW</title>
+  <meta name="description" content="Prüfungstrainer für Elektroniker/-in Energie- und Gebäudetechnik (GP Teil 2 NRW) mit WiSo, Elektro-Theorie, Rechentrainer, VDE 0100-600, CAD, SPS & KI-Prüfer." />
+  <meta property="og:title" content="GP Teil 2 Prüfungstrainer NRW" />
+  <meta property="og:description" content="Prüfungstrainer für Elektroniker/-in Energie- und Gebäudetechnik (GP Teil 2 NRW) mit WiSo, Elektro-Theorie, Rechentrainer, VDE 0100-600, CAD, SPS & KI-Prüfer." />
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-top-bar">
+      <div class="header-title-box">
+        <h1>⚡ Elektroniker Lernplattform – GP Teil 2 (NRW)</h1>
+        <p>WiSo (60), Elektro-Theorie (83), Fachenglisch (28), 25er-Rechentrainer, VDE 0100-600, SEE Electrical CAD-Suite, SPS KOP-Simulator, 18 Original-Prüfungen & KI-Prüfer</p>
+      </div>
+      <button id="btn-open-ai-modal" class="ai-status-btn" type="button">
+        🤖 <span id="ai-status-text">Gruppencode nötig</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="container">
+    <section class="countdown-card">
+      <div>
+        <h3>⏳ Countdown zur Gesellenprüfung Teil 2 (NRW)</h3>
+        <p style="font-size: 0.82rem; color: var(--text-muted);">Prüfungsausschuss-Maßstab: 1. Gegeben/Gesucht, 2. Formel, 3. Einsetzen MIT Einheit, 4. Antwortsatz!</p>
+      </div>
+      <div id="countdown-timer" class="countdown-timer">
+        <div class="time-box"><span id="days">00</span><span class="time-label">Tage</span></div>
+        <div class="time-box"><span id="hours">00</span><span class="time-label">Std</span></div>
+        <div class="time-box"><span id="minutes">00</span><span class="time-label">Min</span></div>
+        <div class="time-box"><span id="seconds">00</span><span class="time-label">Sek</span></div>
+      </div>
+    </section>
+
+    <!-- Psychologie-Banner -->
+    <div class="motivation-banner">
+      <span id="exam-weight-info">💡 <strong>Prüfungs-Fokus (AO 2021):</strong> Schriftlicher Teil zählt ca. 64 % der GP2! Aufgabe 4.3 (Prüfprotokoll) zählt allein 70 % der Übergabe.</span>
+      <span class="daily-goal-badge" id="daily-goal-display">🎯 Heute gelernt: 0 / 15 Fragen</span>
+    </div>
+  </div>
+
+  <nav class="app-tabs" role="tablist">
+    <button class="tab-btn active" data-target="wiso-section" role="tab" id="tab-wiso" type="button">🧠 WiSo-Trainer (60)</button>
+    <button class="tab-btn" data-target="elektro-section" role="tab" id="tab-elektro" type="button">🔌 Elektro-Theorie (83)</button>
+    <button class="tab-btn" data-target="english-section" role="tab" id="tab-english" type="button">🇬🇧 Fachenglisch (28)</button>
+    <button class="tab-btn" data-target="calc-section" role="tab" id="tab-calc" type="button">🧮 NRW-Rechentrainer (25)</button>
+    <button class="tab-btn" data-target="protokoll-section" role="tab" id="tab-protokoll" type="button">📋 Prüfprotokoll (Aufg. 4.3)</button>
+    <button class="tab-btn" data-target="schaltplan-section" role="tab" id="tab-schaltplan" type="button">🔎 Schaltplan, CAD & SPS</button>
+    <button class="tab-btn" data-target="sim-section" role="tab" id="tab-sim" type="button">⏱️ Prüfungssimulation (100 P.)</button>
+    <button class="tab-btn" data-target="video-section" role="tab" id="tab-video" type="button">🎬 Videothek</button>
+    <button class="tab-btn" data-target="masterbook-section" role="tab" id="tab-masterbook" type="button">📖 Masterbücher & 18 Prüfungen</button>
+  </nav>
+
+  <main class="container">
+    <!-- QUIZ & FREIHAND CONTAINER (WiSo, Elektro, Englisch) -->
+    <div id="quiz-main-container">
+      <section class="controls-card">
+        <div class="control-group">
+          <label for="filter-exam">📅 Prüfung filtern:</label>
+          <select id="filter-exam"></select>
+        </div>
+
+        <div class="control-group">
+          <label for="filter-category">📚 Themengebiet:</label>
+          <select id="filter-category"></select>
+        </div>
+
+        <div class="control-group">
+          <label for="filter-mode">🎯 Fragen-Filter:</label>
+          <select id="filter-mode">
+            <option value="all">📋 Alle Fragen anzeigen</option>
+            <option value="unlearned">⚪ Nur noch nicht gewusste Fragen</option>
+            <option value="wrong">❌ Nur falsch beantwortete Fragen</option>
+            <option value="bookmarked">⭐ Nur markierte Fragen (Merkliste)</option>
+          </select>
+        </div>
+
+        <div class="control-group" style="grid-column: 1 / -1;">
+          <label for="search-input">🔍 Globale Stichwortsuche (durchsucht automatisch WiSo, Elektro & Englisch):</label>
+          <input type="text" id="search-input" placeholder="Suchbegriff eingeben (z. B. RCD, HES, GmbH, Dahlander, 2150 MHz, normally closed)...">
+          <div id="search-info" class="search-info"></div>
+        </div>
+
+        <div class="button-row">
+          <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+            <span style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">Antwort-Modus:</span>
+            <div class="mode-switch-group">
+              <button id="mode-btn-freehand" class="mode-switch-btn active" type="button">✍️ Freihand + KI-Kontrolle</button>
+              <button id="mode-btn-mc" class="mode-switch-btn" type="button">🔘 Multiple-Choice</button>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button id="btn-sprint" class="btn warning" type="button" title="Startet 10 zufällige offene Fragen gegen Aufschieberitis">⚡ 10er-Sprint</button>
+            <button id="btn-shuffle" class="btn secondary" type="button">🔀 Mischen</button>
+            <button id="btn-export" class="btn secondary" type="button">💾 Backup</button>
+            <button id="btn-import" class="btn secondary" type="button">📂 Laden</button>
+            <button id="btn-reset" class="btn danger" type="button">🗑️ Reset</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-bar">
+        <div class="stat-item"><span class="stat-label">Frage</span><span id="stat-current" class="stat-value">1 / 1</span></div>
+        <div class="stat-item correct"><span class="stat-label">✅ Gewusst</span><span id="stat-correct" class="stat-value">0</span></div>
+        <div class="stat-item wrong"><span class="stat-label">❌ Wiederholen</span><span id="stat-wrong" class="stat-value">0</span></div>
+        <div class="stat-item streak"><span class="stat-label">🔥 Serie</span><span id="stat-streak" class="stat-value">0</span></div>
+        <div class="stat-item"><span class="stat-label">📊 Quote</span><span id="stat-percent" class="stat-value">0 %</span></div>
+        <div class="stat-item grade"><span class="stat-label">🎓 GP2-Note (HWK)</span><span id="stat-grade" class="stat-value">–</span></div>
+      </section>
+
+      <div class="progress-wrapper">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+
+      <section class="quiz-card" id="question-card-container">
+        <div class="card-top-row">
+          <div class="badges">
+            <span id="badge-exam" class="badge exam-badge">Prüfung</span>
+            <span id="badge-category" class="badge cat-badge">Thema</span>
+            <span id="badge-status" class="badge status-badge">Neu</span>
+          </div>
+          <button id="btn-bookmark" class="bookmark-btn" type="button">☆ Auf Merkliste (Taste M)</button>
+        </div>
+
+        <h2 id="question-text" class="question-text">Frage wird geladen...</h2>
+
+        <!-- BEREICH 1: FREIHAND SCHREIBEN & KI-KONTROLLE -->
+        <div id="freehand-container" class="freehand-box">
+          <div class="freehand-textarea-wrapper">
+            <textarea id="freehand-input" class="freehand-textarea" placeholder="Schreibe deine Antwort hier frei wie in der schriftlichen NRW-Prüfung hinein (Stichpunkte oder ganze Sätze)..."></textarea>
+            <button id="btn-mic" class="mic-btn" type="button" title="Antwort per Mikrofon einsprechen">🎤</button>
+          </div>
+          <div class="freehand-actions">
+            <button id="btn-check-freehand" class="btn primary" type="button">🤖 Antwort durch Prüfer-KI kontrollieren (Strg + Enter)</button>
+            <button id="btn-show-solution-direct" class="btn secondary" type="button">👁️ Direkt Musterlösung aufdecken</button>
+          </div>
+        </div>
+
+        <!-- BEREICH 2: MULTIPLE CHOICE OPTIONEN -->
+        <div id="options-container" class="options-container hidden"></div>
+
+        <!-- ERKLÄRUNG & KI-FEEDBACK BOX -->
+        <div id="explanation-box" class="explanation-box hidden">
+          <h3 id="feedback-title">Auswertung</h3>
+
+          <div id="ai-feedback-container" class="ai-feedback-box hidden">
+            <p style="font-size: 0.85rem; color: #d8b4fe; font-weight: 700; margin-bottom: 0.35rem;" id="ai-feedback-header">🤖 Prüfer-Analyse deiner freien Antwort:</p>
+            <div id="ai-feedback-text" style="font-size: 0.95rem; color: #f8fafc; white-space: pre-line;"></div>
+            <div id="keyword-chips-container" style="margin-top: 0.65rem;"></div>
+          </div>
+
+          <p class="explanation-label">📝 <strong>Offizielle Musterlösung, Tabellenbuch & NRW-Prüfungsfalle:</strong></p>
+          <div id="explanation-text" class="explanation-text"></div>
+
+          <div id="self-grade-row" class="self-grade-row hidden">
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Wertung anpassen:</span>
+            <button id="btn-mark-correct" class="btn success" type="button" style="padding: 0.45rem 0.85rem; font-size: 0.85rem;">✅ War sinngemäß richtig (Gewusst)</button>
+            <button id="btn-mark-wrong" class="btn danger" type="button" style="padding: 0.45rem 0.85rem; font-size: 0.85rem;">❌ Noch mal wiederholen</button>
+          </div>
+        </div>
+
+        <div class="navigation-row">
+          <button id="btn-prev" class="btn secondary nav-btn" type="button">⬅️ Zurück</button>
+          <button id="btn-next" class="btn primary nav-btn" type="button">Nächste Frage ➡️</button>
+        </div>
+        <p style="text-align: center; margin-top: 0.8rem; font-size: 0.8rem; color: var(--text-muted);">
+          💡 Tipp: Im <strong>Freihand-Modus</strong> prüft <kbd>Strg</kbd> + <kbd>Enter</kbd> deine Antwort | Im <strong>MC-Modus</strong> Tasten <kbd>1–4</kbd> & Pfeiltasten | <kbd>M</kbd> = Merkliste
+        </p>
+      </section>
+    </div>
+
+    <!-- NRW-RECHENTRAINER SEKTION (15 AUFGABEN IM 4-SCHRITTE-SCHEMA) -->
+    <section id="calc-section" class="content-section hidden">
+      <div class="video-header-card">
+        <h2>🧮 NRW-Rechentrainer (Offizielles 4-Schritte-Prüfungsschema)</h2>
+        <p>Trainiere die wichtigsten Berechnungen aus Arbeitsvorbereitung, Planung, FSA und WiSo nach strenger FEH-NRW-Vorgabe.</p>
+        <div style="margin-top: 1rem; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+          <select id="calc-task-selector" style="max-width: 560px;"></select>
+          <button id="btn-calc-random" class="btn secondary" type="button">🎲 Neue Zufallszahlen generieren</button>
+        </div>
+      </div>
+
+      <div class="quiz-card">
+        <div class="badges">
+          <span id="calc-badge-exam" class="badge exam-badge">Prüfung</span>
+          <span id="calc-badge-book" class="badge cat-badge">Tabellenbuch</span>
+        </div>
+
+        <h2 id="calc-question-title" class="question-text" style="margin-bottom: 0.6rem;">Aufgabe</h2>
+        <p id="calc-question-desc" style="color: #cbd5e1; background: #0f172a; padding: 1rem; border-radius: 8px; border: 1px solid var(--card-border); margin-bottom: 1rem;"></p>
+
+        <!-- Klickbare Formel- & Sonderzeichen-Leiste -->
+        <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; background: #0f172a; padding: 0.6rem 0.8rem; border-radius: 8px; border: 1px solid var(--card-border); margin-bottom: 1rem;">
+          <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600; margin-right: 0.3rem;">⚡ Sonderzeichen einfügen:</span>
+          <button type="button" class="quick-chip formula-sym-btn" data-sym="√3">√3</button>
+          <button type="button" class="quick-chip formula-sym-btn" data-sym="ΔU">ΔU</button>
+          <button type="button" class="quick-chip formula-sym-btn" data-sym="Δu">Δu</button>
+          <button type="button" class="quick-chip formula-sym-btn" data-sym="cos φ">cos φ</button>
+          <button type="button" class="quick-chip formula-sym-btn" data-sym="tan φ">tan φ</button>
+          <button type="button" class="quick-chip formula-sym-btn" data-sym="η">η</button>
+          <button type="button" class="quick-chip formula-sym-btn" data-sym="κ">κ</button>
+          <button type="button" class="quick-chip formula-sym-btn" data-sym="Ω">Ω</button>
+          <button type="button" class="quick-chip formula-sym-btn" data-sym="mm²">mm²</button>
+          <button type="button" class="quick-chip formula-sym-btn" data-sym="µF">µF</button>
+          <button type="button" class="quick-chip formula-sym-btn" data-sym="·">·</button>
+          <button type="button" class="quick-chip formula-sym-btn" data-sym="≤">≤</button>
+          <button type="button" class="quick-chip formula-sym-btn" data-sym="≥">≥</button>
+        </div>
+
+        <div class="calc-step-grid">
+          <div class="calc-step-card">
+            <h4>1️⃣ Schritt 1: Gegeben & Gesucht (mit Einheiten)</h4>
+            <textarea id="calc-step-1" rows="3" placeholder="z. B. Gegeben: P = 11 kW, U = 400 V, cos φ = 1&#10;Gesucht: Betriebsstrom Ib in A"></textarea>
+          </div>
+          <div class="calc-step-card">
+            <h4>2️⃣ Schritt 2: Grundformel & umgestellte Formel</h4>
+            <textarea id="calc-step-2" rows="3" placeholder="z. B. P = √3 · U · I · cos φ  =>  I = P / (√3 · U · cos φ)"></textarea>
+          </div>
+          <div class="calc-step-card">
+            <h4>3️⃣ Schritt 3: Werte MIT Einheiten einsetzen</h4>
+            <textarea id="calc-step-3" rows="3" placeholder="z. B. I = 11000 W / (√3 · 400 V · 1)"></textarea>
+          </div>
+          <div class="calc-step-card">
+            <h4>4️⃣ Schritt 4: Endergebnis & Antwortsatz</h4>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center;">
+              <input type="text" id="calc-user-number" placeholder="Zahlenwert (z. B. 62,5)">
+              <span id="calc-unit-label" style="font-weight: 700; color: var(--primary); min-width: 60px;">Einheit</span>
+            </div>
+            <input type="text" id="calc-step-4" placeholder="Kurzer Antwortsatz (z. B. Der Mindestpegel wird eingehalten.)">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.2rem;">
+          <button id="btn-calc-check" class="btn primary" type="button">✅ Rechenweg & Ergebnis prüfen</button>
+          <button id="btn-calc-show-solution" class="btn secondary" type="button">📖 Komplette 4-Schritte-Musterlösung anzeigen</button>
+        </div>
+
+        <div id="calc-solution-box" class="explanation-box hidden">
+          <h3 id="calc-feedback-title">Musterlösung</h3>
+          <div id="calc-solution-text" class="explanation-text"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRÜFPROTOKOLL-SIMULATOR (AUFGABE 4.3 – DIN VDE 0100-600) -->
+    <section id="protokoll-section" class="content-section hidden">
+      <div class="video-header-card">
+        <h2>📋 Interaktiver Prüfprotokoll-Simulator (Aufgabe 4.3 – DIN VDE 0100-600)</h2>
+        <p>Aufgabe 4.3 zählt <strong>70 % der Note im Bereich Übergabe</strong>! Prüfe die 8 Stromkreise auf versteckte NRW-Prüfungsfallen, wähle pro Zeile <strong>„i. O.“</strong> oder <strong>„n. i. O.“</strong> und begründe deine Entscheidung.</p>
+      </div>
+
+      <div class="quiz-card">
+        <div class="proto-meta-grid">
+          <div class="proto-meta-item"><strong>Prüfung nach Norm</strong>DIN VDE 0100-600 (Erstprüfung)</div>
+          <div class="proto-meta-item"><strong>Netzsystem</strong>TN-C-S / TN-S | 3/N/PE ~ 400/230 V, 50 Hz</div>
+          <div class="proto-meta-item"><strong>Vorimpedanz & Messgerät</strong>Z<sub>Vor</sub> = 0,20 Ω | VDE 0413 Tester (R<sub>PE</sub> kalibriert)</div>
+          <div class="proto-meta-item"><strong>Zwingende Reihenfolge</strong>1. Besichtigen → 2. R<sub>PE</sub> & R<sub>iso</sub> (spannungsfrei!) → 3. Z<sub>S</sub>, Z<sub>I</sub>, RCD, Drehfeld</div>
+        </div>
+
+        <div class="proto-table-wrapper">
+          <table class="proto-table">
+            <thead>
+              <tr>
+                <th>Nr.</th>
+                <th>Zielbezeichnung (Stromkreis)</th>
+                <th>Leitung / Querschnitt<br><small>(Verlegeart / Länge)</small></th>
+                <th>Schutz-<br>organ</th>
+                <th>R<sub>PE</sub><br><small>[Ω]</small></th>
+                <th>R<sub>iso</sub><br><small>[MΩ]</small></th>
+                <th>Z<sub>S</sub> (L-PE)<br><small>[Ω]</small></th>
+                <th>Z<sub>I</sub> (L-N)<br><small>[Ω]</small></th>
+                <th>RCD (Typ / I<sub>Δn</sub>)<br><small>I<sub>A</sub> / t<sub>A</sub></small></th>
+                <th>Dreh-<br>feld</th>
+                <th>Bewertung<br><small>(i.O. / n.i.O.)</small></th>
+                <th>Fachliche Begründung / Fehlerursache<br><small>(Tabellenbuch & VDE)</small></th>
+              </tr>
+            </thead>
+            <tbody id="proto-tbody"></tbody>
+          </table>
+        </div>
+
+        <div class="proto-footer-box">
+          <div>
+            <strong style="color: #fbbf24; display: block;">📌 Pflichtfeld im ZVEH-Protokollfuß (NRW-Punktefalle!):</strong>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">Darf für diese Gesamtanlage die Prüfplakette zugeteilt werden?</span>
+          </div>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <label style="font-size: 0.88rem; cursor: pointer;"><input type="radio" name="proto-overall" value="ok"> 🟢 Keine Mängel / Plakette: <strong>JA</strong></label>
+            <label style="font-size: 0.88rem; cursor: pointer;"><input type="radio" name="proto-overall" value="mangel"> 🔴 Mängel festgestellt / Plakette: <strong>NEIN</strong></label>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+          <div style="display: flex; gap: 0.7rem; flex-wrap: wrap;">
+            <button id="btn-proto-check" class="btn primary" type="button">✅ Prüfprotokoll auswerten</button>
+            <button id="btn-proto-reveal" class="btn secondary" type="button">👁️ Musterlösung & Begründungen zeigen</button>
+            <button id="btn-proto-random" class="btn warning" type="button">🎲 Neue Messwerte würfeln</button>
+            <button id="btn-proto-reset" class="btn danger" type="button">🔄 Zurücksetzen</button>
+          </div>
+          <span id="proto-score-badge" class="daily-goal-badge">Noch nicht ausgewertet</span>
+        </div>
+
+        <div id="proto-feedback-container" class="hidden" style="margin-top: 1.4rem;"></div>
+      </div>
+    </section>
+
+    <!-- SCHALTPLAN-, FSA-, SEE ELECTRICAL CAD- & SPS-TRAINER -->
+    <section id="schaltplan-section" class="content-section hidden">
+      <div class="video-header-card">
+        <h2>🔎 Interaktiver Schaltplan-, CAD- & SPS-Trainer</h2>
+        <p>Komplett-Werkstatt für <strong>Systementwurf (8-Fehler-Verteilungsplan & SEE Electrical CAD-Suite)</strong> sowie <strong>Funktions- und Systemanalyse (FSA, Schützsteuerungen & SPS KOP-Simulator)</strong>.</p>
+        <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap;">
+          <button id="btn-mode-uv" class="btn primary" type="button">🛡️ 1. 8-Fehler-Verteilungsplan</button>
+          <button id="btn-mode-fsa" class="btn secondary" type="button">⚙️ 2. Schütz- & Motorsteuerungen (FSA)</button>
+          <button id="btn-mode-seecad" class="btn secondary" type="button">📐 3. SEE Electrical CAD-Suite (9 Prüfungen)</button>
+          <button id="btn-mode-sps" class="btn secondary" type="button">🎛️ 4. SPS KOP-Simulator (easySoft & TIA)</button>
+        </div>
+      </div>
+
+      <!-- SZENARIO 1: DER 8-FEHLER-VERTEILUNGSPLAN -->
+      <div id="uv-trainer-container" class="quiz-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1rem;">
+          <div>
+            <h3 style="color: #60a5fa;">🛡️ Prüfungsklassiker: Die 8 Fehler im Verteilungsplan finden</h3>
+            <p style="font-size: 0.86rem; color: var(--text-muted);">Klicke im SVG-Schaltplan auf die <strong>8 gelben Fehler-Markierungen (1 bis 8)</strong>, wähle den Fehler und prüfe die Auswirkung nach DIN VDE!</p>
+          </div>
+          <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+            <button id="btn-toggle-uv-hints" class="btn secondary" type="button" style="font-size: 0.8rem; padding: 0.4rem 0.75rem;">
+              👁️ Hinweis-Texte im Plan einblenden (Lernhilfe)
+            </button>
+            <span id="uv-progress-badge" class="daily-goal-badge">Gefunden: 0 / 8 Fehler</span>
+          </div>
+        </div>
+
+        <div class="svg-trainer-box">
+          <svg viewBox="0 0 920 520" width="100%" style="max-width: 900px; height: auto; font-family: sans-serif;">
+            <rect x="10" y="10" width="900" height="500" rx="10" fill="#0f172a" stroke="#475569" stroke-width="3"/>
+            <text x="25" y="35" fill="#94a3b8" font-size="13" font-weight="bold">Unterverteilung UV-Großbäckerei (TN-S-System, 3/N/PE ~ 400/230 V)</text>
+
+            <rect x="40" y="55" width="210" height="22" rx="4" fill="#1e3a8a" stroke="#3b82f6" stroke-width="2"/>
+            <text x="50" y="71" fill="#fff" font-size="12" font-weight="bold">N1-Schiene (RCD 1)</text>
+
+            <rect x="310" y="55" width="210" height="22" rx="4" fill="#1e3a8a" stroke="#3b82f6" stroke-width="2"/>
+            <text x="320" y="71" fill="#fff" font-size="12" font-weight="bold">N2-Schiene (RCD 2)</text>
+
+            <line x1="250" y1="66" x2="310" y2="66" stroke="#3b82f6" stroke-width="3.5"/>
+            <text class="uv-spoiler-text" x="256" y="50" fill="#fca5a5" font-size="11" font-weight="bold">Brücke N1-N2!</text>
+
+            <rect x="610" y="55" width="240" height="22" rx="4" fill="#14532d" stroke="#22c55e" stroke-width="2"/>
+            <text x="625" y="71" fill="#bbf7d0" font-size="12" font-weight="bold">PE-Schiene (mit Gehäuse verbunden)</text>
+            <line x1="850" y1="66" x2="908" y2="66" stroke="#22c55e" stroke-width="3"/>
+
+            <rect x="40" y="125" width="135" height="75" rx="6" fill="#1e293b" stroke="#64748b" stroke-width="2"/>
+            <text x="50" y="145" fill="#f8fafc" font-size="12" font-weight="bold">-F01: 3x Neozed</text>
+            <text x="50" y="165" fill="#fbbf24" font-size="12" font-weight="bold">3x 35 A gG</text>
+            <text x="50" y="185" fill="#94a3b8" font-size="10">Abgang zu RCD 1 + RCD 2</text>
+
+            <rect x="190" y="125" width="135" height="75" rx="6" fill="#1e293b" stroke="#64748b" stroke-width="2"/>
+            <text x="200" y="145" fill="#f8fafc" font-size="12" font-weight="bold">-F02: 3x Neozed</text>
+            <text x="200" y="165" fill="#fbbf24" font-size="12" font-weight="bold">3x 35 A gG</text>
+            <text x="200" y="185" fill="#94a3b8" font-size="10">Abgang zu RCD 2</text>
+            <text class="uv-spoiler-text" x="195" y="118" fill="#fca5a5" font-size="10" font-weight="bold">Parallel auf RCD 2 (70A!)</text>
+
+            <rect x="350" y="125" width="165" height="75" rx="6" fill="#1e293b" stroke="#64748b" stroke-width="2"/>
+            <text x="362" y="145" fill="#f8fafc" font-size="12" font-weight="bold">-F3: SPD Typ 2</text>
+            <text x="362" y="165" fill="#cbd5e1" font-size="11">Klemme N → PE-Schiene</text>
+            <text x="362" y="185" fill="#cbd5e1" font-size="11">Klemme PE → offen / L3</text>
+
+            <rect x="40" y="250" width="140" height="115" rx="6" fill="#1e293b" stroke="#64748b" stroke-width="2"/>
+            <text x="55" y="275" fill="#60a5fa" font-size="12" font-weight="bold">Drehstromzähler</text>
+            <text x="55" y="295" fill="#f8fafc" font-size="11">234.490 kWh</text>
+            <text x="55" y="345" fill="#94a3b8" font-size="11">-F00: SLS 3x 63 A</text>
+
+            <rect x="230" y="240" width="640" height="105" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+            <rect x="245" y="252" width="145" height="80" rx="5" fill="#0f172a" stroke="#3b82f6" stroke-width="2"/>
+            <text x="255" y="275" fill="#60a5fa" font-size="12" font-weight="bold">-F1 (RCD 1)</text>
+            <text x="255" y="295" fill="#f8fafc" font-size="12">4x 63 A / 0,03 A</text>
+            <text x="255" y="315" fill="#4ade80" font-size="10">I_Δn = 30 mA</text>
+
+            <rect x="405" y="252" width="165" height="80" rx="5" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+            <text x="415" y="273" fill="#f8fafc" font-size="11" font-weight="bold">-F1.1 Durchlauferhitzer</text>
+            <text x="415" y="292" fill="#f8fafc" font-size="11">3x 1-polig: B32 | B32 | B32</text>
+            <text x="415" y="312" fill="#94a3b8" font-size="10">Vorgabe: 3x C32A (4x6 mm²)</text>
+
+            <rect x="585" y="252" width="270" height="80" rx="5" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+            <text x="595" y="273" fill="#f8fafc" font-size="11" font-weight="bold">-F1.2 bis -F1.5 (Flur / WC / Pause)</text>
+            <text x="595" y="292" fill="#cbd5e1" font-size="11">Leitung: NYM-J 3x 1,5 mm² (gn/ge an L)</text>
+            <text class="uv-spoiler-text" x="595" y="312" fill="#fca5a5" font-size="10">Grün-Gelb (PE) als Schaltdraht / N-Fehler!</text>
+
+            <rect x="230" y="370" width="640" height="105" rx="8" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+            <rect x="245" y="382" width="155" height="80" rx="5" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+            <text x="255" y="405" fill="#60a5fa" font-size="12" font-weight="bold">-F2 (RCD 2)</text>
+            <text x="255" y="425" fill="#f8fafc" font-size="12" font-weight="bold">4x 40 A / 0,3 A</text>
+            <text class="uv-spoiler-text" x="255" y="445" fill="#fca5a5" font-size="10">300 mA für Steckdosen!</text>
+
+            <rect x="415" y="382" width="350" height="80" rx="5" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+            <text x="425" y="405" fill="#f8fafc" font-size="11" font-weight="bold">-F2.1 bis -F2.6 (Büro- & Teeküche)</text>
+            <text x="425" y="425" fill="#cbd5e1" font-size="11">5x LS B16A + 1x LS B10A (-F2.5 Teeküche)</text>
+            <text class="uv-spoiler-text" x="425" y="445" fill="#fca5a5" font-size="10">-F2.5 Teeküche mit B10A statt B16A / Überlastung RCD 2</text>
+
+            <rect x="835" y="455" width="42" height="42" fill="#1e293b" stroke="#f8fafc" stroke-width="2"/>
+            <rect x="845" y="465" width="22" height="22" fill="none" stroke="#f8fafc" stroke-width="2"/>
+
+            <!-- 8 INTERAKTIVE HOTSPOTS -->
+            <g class="fault-hotspot" data-fault="1" transform="translate(280, 66)"><circle r="15" fill="#f59e0b" stroke="#fff" stroke-width="2"/><text y="5" text-anchor="middle" fill="#000" font-weight="bold" font-size="13">1</text></g>
+            <g class="fault-hotspot" data-fault="2" transform="translate(255, 125)"><circle r="15" fill="#f59e0b" stroke="#fff" stroke-width="2"/><text y="5" text-anchor="middle" fill="#000" font-weight="bold" font-size="13">2</text></g>
+            <g class="fault-hotspot" data-fault="3" transform="translate(385, 390)"><circle r="15" fill="#f59e0b" stroke="#fff" stroke-width="2"/><text y="5" text-anchor="middle" fill="#000" font-weight="bold" font-size="13">3</text></g>
+            <g class="fault-hotspot" data-fault="4" transform="translate(555, 255)"><circle r="15" fill="#f59e0b" stroke="#fff" stroke-width="2"/><text y="5" text-anchor="middle" fill="#000" font-weight="bold" font-size="13">4</text></g>
+            <g class="fault-hotspot" data-fault="5" transform="translate(500, 125)"><circle r="15" fill="#f59e0b" stroke="#fff" stroke-width="2"/><text y="5" text-anchor="middle" fill="#000" font-weight="bold" font-size="13">5</text></g>
+            <g class="fault-hotspot" data-fault="6" transform="translate(835, 455)"><circle r="15" fill="#f59e0b" stroke="#fff" stroke-width="2"/><text y="5" text-anchor="middle" fill="#000" font-weight="bold" font-size="13">6</text></g>
+            <g class="fault-hotspot" data-fault="7" transform="translate(840, 255)"><circle r="15" fill="#f59e0b" stroke="#fff" stroke-width="2"/><text y="5" text-anchor="middle" fill="#000" font-weight="bold" font-size="13">7</text></g>
+            <g class="fault-hotspot" data-fault="8" transform="translate(750, 390)"><circle r="15" fill="#f59e0b" stroke="#fff" stroke-width="2"/><text y="5" text-anchor="middle" fill="#000" font-weight="bold" font-size="13">8</text></g>
+          </svg>
+        </div>
+
+        <div id="uv-fault-panel" class="explanation-box">
+          <h3 id="uv-fault-title" style="color: #fbbf24;">👆 Klicke oben im Schaltplan auf eine der 8 Fehlernummern (1–8)!</h3>
+          <p id="uv-fault-prompt" style="font-size: 0.92rem; color: #cbd5e1; margin-bottom: 0.8rem;">
+            In der NRW-Prüfung (Systementwurf Aufgabe 1) musst du jeden Fehler benennen, die Auswirkung im Betrieb begründen und die fachgerechte Korrektur angeben.
+          </p>
+          <div id="uv-fault-options" class="options-container hidden"></div>
+          <div id="uv-fault-explanation" class="explanation-text hidden"></div>
+        </div>
+      </div>
+
+      <!-- SZENARIO 2: SCHÜTZ- UND MOTORSTEUERUNGEN (FSA) -->
+      <div id="fsa-trainer-container" class="quiz-card hidden">
+        <h3 style="color: #60a5fa; margin-bottom: 0.4rem;">⚙️ Interaktive Schütz- & Motorsteuerungen (FSA-Meisterklasse)</h3>
+        <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 1rem;">Wähle eine Schaltung, analysiere das SVG-Schaltbild und beantworte die Prüfungsfrage!</p>
+
+        <div class="circuit-subnav">
+          <button class="circuit-subbtn active" data-circuit="selbsthaltung" type="button">1️⃣ Selbsthaltung & Drahtbruchsicherheit</button>
+          <button class="circuit-subbtn" data-circuit="wendeschuetz" type="button">2️⃣ Wendeschütz (Schütz- & Tasterverriegelung)</button>
+          <button class="circuit-subbtn" data-circuit="dahlander" type="button">3️⃣ Dahlanderschaltung (Δ / YY mit 2x MSR)</button>
+          <button class="circuit-subbtn" data-circuit="zeitrelais" type="button">4️⃣ Stern-Dreieck & Zeitrelais (Anzug/Abfall)</button>
+        </div>
+
+        <div id="fsa-svg-holder" class="svg-trainer-box"></div>
+
+        <h3 id="fsa-question-title" style="font-size: 1.1rem; margin-bottom: 0.8rem; color: #fff;"></h3>
+        <div id="fsa-options-holder" class="options-container"></div>
+        <div id="fsa-explanation-holder" class="explanation-box hidden">
+          <h4 id="fsa-feedback-header" style="margin-bottom: 0.4rem;"></h4>
+          <div id="fsa-feedback-text" class="explanation-text"></div>
+        </div>
+      </div>
+
+      <!-- SZENARIO 3: SEE ELECTRICAL CAD-PRÜFUNGSTRAINER (9 PROJEKTE) -->
+      <div id="seecad-trainer-container" class="cad-app hidden">
+        <div class="top-bar">
+          <div class="brand">📐 SEE Electrical Prüfungs-Suite <span>GP Teil 2 (NRW) — 9 Original-Projekte</span></div>
+          <select id="projSelect" class="proj-select" onchange="SEE_CAD.onSwitchProject()"></select>
+          <div class="top-btns">
+            <button class="t-btn" type="button" onclick="SEE_CAD.toggleBriefing()">📋 Aufgabenblatt ein/aus</button>
+            <button class="t-btn" type="button" onclick="SEE_CAD.startBlank()">📄 Von 0 (Leeres Blatt)</button>
+            <button class="t-btn blue" type="button" onclick="SEE_CAD.loadTemplate()">✏️ Vorgabe-Plan (Reset)</button>
+            <button class="t-btn amber" type="button" onclick="SEE_CAD.toggleGhost()">👻 Blaupause</button>
+            <button class="t-btn green" type="button" onclick="SEE_CAD.runAudit()">✅ Zeichnung prüfen (GP2-Check)</button>
+            <button class="t-btn" type="button" onclick="SEE_CAD.loadSolution()">👁️ Original-Musterlösung</button>
+          </div>
+        </div>
+
+        <div class="briefing" id="briefingBox">
+          <div class="b-card">
+            <div class="b-hdr">
+              <span>Aufgabenstellung & Lastenheft (Prüfungs-Checkliste)</span>
+              <span style="color:#38bdf8;">Prüft Symbol + BMK + Anschlüsse + Verdrahtung!</span>
+            </div>
+            <ul class="req-ul" id="reqList"></ul>
+          </div>
+          <div class="b-card">
+            <div class="b-hdr"><span>🔧 Technologieschema & Klemmenbezeichnungen</span></div>
+            <div class="tech-wrap" id="techGrid"></div>
+          </div>
+        </div>
+
+        <div class="ribbon">
+          <div class="r-grp">
+            <b>Werkzeug:</b>
+            <button class="r-btn active" type="button" id="tool_SYM" onclick="SEE_CAD.setTool('SYM')">⚡ Symbol setzen</button>
+            <button class="r-btn" type="button" id="tool_VWIRE" onclick="SEE_CAD.setTool('VWIRE')">⬇️ Senkrechte Leitung</button>
+            <button class="r-btn" type="button" id="tool_W1" onclick="SEE_CAD.setTool('W1')">📏 Leitung (Start ➔ Ziel)</button>
+            <button class="r-btn del" type="button" id="tool_DEL" onclick="SEE_CAD.setTool('DEL')">❌ Löschen (Rechtsklick)</button>
+            <button class="r-btn" type="button" onclick="SEE_CAD.undo()">↩️ Rückgängig (Strg+Z)</button>
+            <label style="margin-left:6px; cursor:pointer; color:#38bdf8; font-weight:700; display:inline-flex; align-items:center; gap:4px;">
+              <input type="checkbox" id="see_chkAutoWire" checked style="width:auto;"> ✨ Auto-Draht
+            </label>
+          </div>
+          <div class="r-grp">
+            <b>Bauteil-Parameter:</b>
+            <label>BMK: <input type="text" id="inpBmk" class="p-inp" value="-Q1" autocomplete="off" oninput="SEE_CAD.updateCellProps()"></label>
+            <label>Anschlüsse: <input type="text" id="inpPins" class="p-inp" value="13/14" style="width:78px;" autocomplete="off" oninput="SEE_CAD.updateCellProps()"></label>
+            <label>Text: <input type="text" id="inpSub" class="p-inp" value="" placeholder="z.B. 60s / gr" style="width:76px;" autocomplete="off" oninput="SEE_CAD.updateCellProps()"></label>
+          </div>
+          <div class="coord-badge" id="coordDisplay">Koordinate: –</div>
+        </div>
+
+        <div id="statusBar" class="status-bar"></div>
+
+        <div class="workspace">
+          <div class="explorer">
+            <div class="exp-hdr">
+              <span>📁 Symbole (EN 60617)</span>
+              <div>
+                <span class="exp-link" onclick="SEE_CAD.toggleExamSearchMode()" id="searchToggleLbl">🔒 Prüfungsmodus</span>
+                <span class="exp-link" onclick="SEE_CAD.collapseTree()">Zuklappen</span>
+              </div>
+            </div>
+            <div class="exp-search" id="searchWrap">
+              <input type="text" id="symSearch" placeholder="🔎 Bauteil suchen (z.B. TOF, Thermostat, n>, Raute)..." autocomplete="off" oninput="SEE_CAD.renderTree()">
+            </div>
+            <div class="exp-tree" id="treeRoot"></div>
+            <div class="sym-prev">
+              <div class="prev-box">
+                <svg id="prevSvg" viewBox="-45 -26 80 52" width="68" height="54"></svg>
+              </div>
+              <div class="prev-txt" id="prevTxt"></div>
+            </div>
+          </div>
+
+          <div class="viewport">
+            <div class="paper">
+              <svg id="cadSvg" viewBox="0 0 1100 705" oncontextmenu="event.preventDefault();"></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SZENARIO 4: SPS PRÜFUNGS-TRAINER (EASYSOFT & SIEMENS TIA KOP-SIMULATOR) -->
+      <div id="sps-trainer-container" class="app-wrap hidden">
+        <div class="header-bar">
+          <div class="brand-title">
+            ⚡ SPS Prüfungs-Trainer <span class="sps-badge" id="modeBadge">Darstellung: Eaton easySoft (I1 / Q1)</span>
+          </div>
+          <div class="hdr-controls">
+            <button class="hdr-btn btn-syntax" type="button" onclick="SPS_SIM.toggleSyntaxMode()">🔄 Schreibweise: easySoft ⇄ Siemens TIA</button>
+            <button class="hdr-btn btn-row" type="button" onclick="SPS_SIM.addRow()">➕ Strompfad</button>
+            <button class="hdr-btn btn-clear" type="button" onclick="SPS_SIM.clearAll()">🗑️ Alles leeren</button>
+          </div>
+        </div>
+
+        <div class="exam-bar">
+          <div class="exam-top">
+            <select id="taskSelect" class="task-select" onchange="SPS_SIM.loadSelectedTask()"></select>
+            <button class="hdr-btn btn-check" type="button" onclick="SPS_SIM.runExamCheck()">✅ Schaltung prüfen (GP2-Check)</button>
+            <button class="hdr-btn btn-hint" type="button" onclick="SPS_SIM.showTaskHint()">💡 Tipp</button>
+            <button class="hdr-btn btn-sol" type="button" onclick="SPS_SIM.loadSampleSolution()">👁️ Musterlösung</button>
+          </div>
+          <p id="taskDesc" class="task-desc"></p>
+          <div id="tagTable" class="tag-table"></div>
+        </div>
+
+        <div id="feedbackBox" class="alert-box"></div>
+        <div id="linterBox" class="alert-box alert-warn"></div>
+
+        <div class="toolbox">
+          <div class="t-card">
+            <div class="t-hdr">
+              <span>1. Kontakt-Werkzeug (Spalte 1–3)</span>
+              <span style="color:#38bdf8;">Erneuter Klick wechselt -| |- ⇄ -|/|-</span>
+            </div>
+            <div class="t-row">
+              <button class="tool-btn active" type="button" id="btnTool_NO" onclick="SPS_SIM.selectTool('NO')">-| |- Schließer</button>
+              <button class="tool-btn" type="button" id="btnTool_NC" onclick="SPS_SIM.selectTool('NC')">-|/|- Öffner</button>
+              <button class="tool-btn" type="button" id="btnTool_WIRE" onclick="SPS_SIM.selectTool('WIRE')">─── Draht</button>
+              <button class="tool-btn del" type="button" id="btnTool_DEL" onclick="SPS_SIM.selectTool('DEL')">❌ Löschen</button>
+              <select id="contactVar" class="param-sel"></select>
+            </div>
+          </div>
+
+          <div class="t-card coil-card">
+            <div class="t-hdr">
+              <span>2. Spulen / Zeitrelais / Zähler (Spalte 4 rechts)</span>
+              <label style="cursor:pointer; color:#fbbf24; font-weight:700; display:inline-flex; align-items:center; gap:4px;">
+                <input type="checkbox" id="sps_chkAutoWire" checked style="width:auto;"> ✨ Auto-Draht
+              </label>
+            </div>
+            <div class="t-row">
+              <select id="coilVar" class="param-sel" onchange="SPS_SIM.updateCoilParamUI()"></select>
+
+              <select id="coilFunc" class="param-sel">
+                <option value="CONT">[ &nbsp;&nbsp; Schütz (Normal)</option>
+                <option value="SET">[ S Setzen (Speichernd Ein)</option>
+                <option value="RES">[ R Rücksetzen (Aus)</option>
+                <option value="TOG">[ Ä Stromstoßrelais</option>
+              </select>
+
+              <select id="timerMode" class="param-sel" style="display:none;">
+                <option value="TON">⏱️ X Einschaltverzögert (TON)</option>
+                <option value="TOF">⏱️ ◁ Ausschaltverzögert (TOF)</option>
+                <option value="BLINK">⏱️  pulses Blinkrelais (Takt)</option>
+              </select>
+              <label id="timerSecWrap" style="display:none; font-size:12.5px; font-weight:700; color:#38bdf8;">
+                Soll (s): <input type="number" id="timerSec" class="param-inp" value="3.0" min="0.5" max="30" step="0.5" style="width:64px;">
+              </label>
+
+              <select id="counterFunc" class="param-sel" style="display:none;">
+                <option value="CC">🔢 CC1 Zählspule (+1 bei Flanke)</option>
+                <option value="RC">🔄 RC1 Zähler zurücksetzen (Reset)</option>
+              </select>
+              <label id="counterLimWrap" style="display:none; font-size:12.5px; font-weight:700; color:#38bdf8;">
+                Soll-Impulse: <input type="number" id="counterLim" class="param-inp" value="3" min="1" max="20" step="1" style="width:58px;">
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="canvas-wrap">
+          <svg id="kopSvg"></svg>
+        </div>
+
+        <div class="cockpit">
+          <div class="cp-panel">
+            <div class="cp-title">🎛️ Eingänge steuern (Klick = Schalter rastend | Unten = Taster tastend)</div>
+            <div class="io-row" id="inputCockpit"></div>
+          </div>
+          <div class="cp-panel">
+            <div class="cp-title">💡 Status Ausgänge (Q), Merker (M), Zeitrelais (T) & Zähler (C)</div>
+            <div class="io-row" id="outputCockpit"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRÜFUNGSSIMULATION SEKTION (IHK/HWK 100-PUNKTE-MODUS) -->
+    <section id="sim-section" class="content-section hidden">
+      <div class="video-header-card">
+        <h2>⏱️ GP2-Prüfungssimulation unter Realbedingungen</h2>
+        <p>Simuliere die Klausur nach FEH-NRW-Vorgaben: Feste Bearbeitungszeit, keine vorzeitige Musterlösung, 100-Punkte-Schlüssel und Notenbescheid.</p>
+        <div style="margin-top: 1rem; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; align-items: center;">
+          <select id="sim-type-select" style="max-width: 340px;">
+            <option value="wiso">WiSo-Klausur (10 Aufgaben – 60 Min.)</option>
+            <option value="elektro">Elektro-Theorie (15 Aufgaben – 90 Min.)</option>
+            <option value="english">Fachenglisch Aufg. 4.4 (8 Aufgaben – 30 Min.)</option>
+            <option value="all">🏆 GP2-Generalprobe (20 Aufgaben gemischt – 90 Min.)</option>
+          </select>
+          <button id="btn-start-sim" class="btn warning" type="button">🚀 Prüfung jetzt starten</button>
+          <button id="btn-finish-sim" class="btn danger hidden" type="button">🛑 Prüfung vorzeitig abgeben & auswerten</button>
+        </div>
+        <div id="sim-timer-box" class="time-box hidden" style="margin: 1rem auto 0 auto; width: 140px;">
+          <span id="sim-timer-display" style="color: #ef4444; font-size: 1.5rem;">60:00</span>
+          <span class="time-label">Verbleibende Prüfungszeit</span>
+        </div>
+      </div>
+
+      <div id="sim-workspace" class="quiz-card hidden">
+        <div id="sim-questions-container"></div>
+      </div>
+
+      <div id="sim-result-card" class="quiz-card hidden" style="text-align: center;">
+        <h3 id="sim-result-title" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></h3>
+        <p id="sim-result-grade" style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1.2rem;"></p>
+        <div id="sim-result-details" style="text-align: left; background: #0f172a; padding: 1.2rem; border-radius: 8px;"></div>
+      </div>
+    </section>
+
+    <!-- ELEKTRO-VIDEOTHEK SEKTION -->
+    <section id="video-section" class="content-section hidden">
+      <div class="video-header-card">
+        <h2>⚡ Elektrotechnische Grundlagen & Komponenten</h2>
+        <p>Wichtige Bauteile und Schutzmaßnahmen für Prüfung und Praxis anschaulich erklärt.</p>
+      </div>
+
+      <div class="video-grid">
+        <div class="video-card">
+          <div class="video-container" style="background: #000;">
+            <video controls preload="none" width="100%" style="display: block; width: 100%; height: auto; max-height: 300px;">
+              <source src="video/rauchmelder.mp4" type="video/mp4">
+              Dein Browser unterstützt das Video-Tag nicht.
+            </video>
+          </div>
+          <div class="video-info">
+            <h3>Optischer Rauchmelder</h3>
+            <p>Erklärung des Streulichtprinzips (Tyndall-Effekt).</p>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-container" style="background: #000;">
+            <video controls preload="none" width="100%" style="display: block; width: 100%; height: auto; max-height: 300px;">
+              <source src="video/solar-deutsch-mit-musik.mp4" type="video/mp4">
+              Dein Browser unterstützt das Video-Tag nicht.
+            </video>
+          </div>
+          <div class="video-info">
+            <h3>Photovoltaik</h3>
+            <p>Deutsche Vertonung mit erhaltener Hintergrundmusik.</p>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-container" style="background: #000;">
+            <video controls preload="none" width="100%" style="display: block; width: 100%; height: auto; max-height: 300px;">
+              <source src="video/schuetz-deutsch-mit-musik.mp4" type="video/mp4">
+              Dein Browser unterstützt das Video-Tag nicht.
+            </video>
+          </div>
+          <div class="video-info">
+            <h3>Lastschütz</h3>
+            <p>Deutsche Vertonung mit erhaltener Hintergrundmusik.</p>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-container" style="background: #000;">
+            <video controls preload="none" width="100%" style="display: block; width: 100%; height: auto; max-height: 300px;">
+              <source src="video/ls.mp4" type="video/mp4">
+              Dein Browser unterstützt das Video-Tag nicht.
+            </video>
+          </div>
+          <div class="video-info">
+            <h3>LS-Schalter (Leitungsschutzschalter)</h3>
+            <p>Erklärung der Auslöser: Thermischer und magnetischer Auslöser.</p>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-container" style="background: #000;">
+            <video controls preload="none" width="100%" style="display: block; width: 100%; height: auto; max-height: 300px;">
+              <source src="video/motorvollschutz.mp4" type="video/mp4">
+              Dein Browser unterstützt das Video-Tag nicht.
+            </video>
+          </div>
+          <div class="video-info">
+            <h3>Der Motorvollschutz</h3>
+            <p>Erklärung des Motorvollschutzes (Bimetall + PTC).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MASTERBÜCHER SEKTION (Alle 9 PDFs integriert) -->
+    <section id="masterbook-section" class="content-section hidden">
+      <div class="video-header-card">
+        <h2>📖 Fachliteratur & Masterbücher (Komplett-Bibliothek)</h2>
+        <p>Wähle hier das gewünschte Masterbuch oder Spickzettel-PDF aus:</p>
+        <div style="margin-top: 1rem; max-width: 550px; margin-left: auto; margin-right: auto;">
+          <select id="pdf-selector" style="width: 100%; padding: 0.8rem; border-radius: 8px; background: #0f172a; color: var(--text); border: 1px solid var(--card-border); font-size: 1rem;">
+            <option value="Masterbuch SAT-Anlagen und Dämpfungsberechnung GP2.pdf">📡 1. Masterbuch: SAT-Anlagen & Dämpfungsberechnung</option>
+            <option value="Masterbuch Leitungsdimensionierung Gesellenprüfung Teil 2.pdf">⚡ 2. Masterbuch: Leitungsdimensionierung & Zs (NRW)</option>
+            <option value="Master-Lösungsbuch Lichtberechnung v1.0.pdf">💡 3. Masterbuch: Lichtberechnung & LED-Sanierung</option>
+            <option value="kompensation-master-loesungsbuch-v4.pdf">🔋 4. Masterbuch: Blindleistungskompensation</option>
+            <option value="Masterbuch VDE 0100-600 und Pruefprotokoll GP2.pdf">📋 5. Masterbuch: VDE 0100-600 & Prüfprotokoll (Aufg. 4.3)</option>
+            <option value="Masterbuch Verteilungsfehler und Schutzmassnahmen GP2.pdf">🛡️ 6. Masterbuch: 8-Fehler-Verteilungsplan & Schutzmaßnahmen</option>
+            <option value="Masterbuch Motoren SPS und Sensorik GP2.pdf">⚙️ 7. Masterbuch: Motoren, SPS (FUP/KOP) & Sensorik</option>
+            <option value="Masterbuch WiSo Komplett-Spickzettel GP2.pdf">🧠 8. Masterbuch: WiSo Komplett-Spickzettel (2018–2025)</option>
+            <option value="Vokabeln.pdf">🇬🇧 9. Masterbuch: Fachenglisch Vokabeln (Aufgabe 4.4)</option>
+          </select>
+          <div style="margin-top: 0.8rem;">
+            <a id="pdf-external-btn" href="Masterbuch SAT-Anlagen und Dämpfungsberechnung GP2.pdf" target="_blank" class="btn primary" style="display: inline-block; text-decoration: none;">
+              📄 PDF im neuen Tab / Vollbild öffnen (Ideal für Handy)
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="quiz-card" style="padding: 1rem; text-align: center;">
+        <iframe id="pdf-frame" src="Masterbuch SAT-Anlagen und Dämpfungsberechnung GP2.pdf" width="100%" height="750px" style="border: none; border-radius: 8px;">
+          Dein Browser unterstützt das direkte Anzeigen von PDFs nicht.
+          <a id="pdf-fallback-link" href="Masterbuch SAT-Anlagen und Dämpfungsberechnung GP2.pdf" target="_blank" style="color: var(--primary);">PDF direkt herunterladen</a>
+        </iframe>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL FÜR DEN GRUPPENZUGANG -->
+  <div id="ai-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h3>🤖 Gemini-Prüfer für die Lerngruppe</h3>
+      <p>Der Gemini-Key wird geschützt auf dem Netlify-Server verwahrt. Gib den Gruppencode ein, den du vom Betreiber erhalten hast. Er wird dauerhaft auf deinem Gerät gespeichert.</p>
+      <div class="control-group" style="margin-bottom: 0.8rem;">
+        <label for="group-code-input">Gruppencode:</label>
+        <input id="group-code-input" type="password" autocomplete="off" placeholder="Gruppencode eingeben">
+      </div>
+      <p id="ai-server-status" aria-live="polite">Der Gruppencode wird für KI-Antworten benötigt.</p>
+      <div style="display: flex; justify-content: flex-end; gap: 0.6rem; flex-wrap: wrap;">
+        <button id="btn-clear-group-code" class="btn danger" type="button">Code entfernen</button>
+        <button id="btn-test-ai-server" class="btn secondary" type="button">🔄 Zugang testen</button>
+        <button id="btn-save-group-code" class="btn success" type="button">💾 Auf Gerät speichern</button>
+        <button id="btn-close-ai-modal" class="btn primary" type="button">Schließen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING CHATBOT BUTTON & WINDOW -->
+  <button id="chatbot-toggle-btn" class="chatbot-fab" title="Fachprüfer-Chatbot öffnen" type="button">
+    💬
+  </button>
+
+  <div id="chatbot-window" class="chatbot-window hidden">
+    <div class="chatbot-header">
+      <h3>⚡ GP2-Fachberater (VDE & Tabellenbuch)</h3>
+      <div style="display: flex; gap: 0.3rem; align-items: center;">
+        <button id="chatbot-clear-btn" class="chatbot-close-btn" type="button" title="Verlauf & Gedächtnis löschen">🔄</button>
+        <button id="chatbot-close-btn" class="chatbot-close-btn" type="button" title="Schließen">✖</button>
+      </div>
+    </div>
+
+    <div id="chatbot-messages" class="chatbot-messages">
+      <div class="chat-bubble bot">
+        Hallo! 👋 Ich bin dein digitaler GP2-Fachprüfer.
+        
+Frag mich nach Formeln, Berechnungen (z. B. <em>500 / 2</em> und danach <em>* 5</em>), VDE-Grenzwerten oder zu deiner aktuell geöffneten CAD-/SPS-Aufgabe!
+      </div>
+    </div>
+
+    <div class="chatbot-quick-prompts">
+      <button class="quick-chip" type="button" data-prompt="Was war nochmal die Formel für den Spannungsfall?">📐 Spannungsfall</button>
+      <button class="quick-chip" type="button" data-prompt="Welche Grenzwerte gelten für RPE und Riso nach VDE 0100-600?">📋 RPE & Riso</button>
+      <button class="quick-chip" type="button" data-prompt="Wie lauten die Abschaltzeiten im TN- und TT-System?">⏱️ Abschaltzeiten</button>
+      <button class="quick-chip" type="button" data-prompt="Wie lautet die Formel für Blindleistungskompensation?">🔋 Kompensation</button>
+      <button class="quick-chip" type="button" data-prompt="Nenne die 5 Sicherheitsregeln in der richtigen Reihenfolge!">🛡️ 5 Sicherheitsregeln</button>
+    </div>
+
+    <form id="chatbot-form" class="chatbot-input-row">
+      <input type="text" id="chatbot-input" placeholder="Frage oder Rechnung eingeben..." autocomplete="off">
+      <button type="submit" class="btn primary">Senden</button>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
