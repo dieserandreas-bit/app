@@ -1,12 +1,12 @@
 {
-  "id": "/",
+  "id": "/app/",
   "name": "GP Teil 2 Prüfungstrainer NRW – Elektroniker",
   "short_name": "GP2 Trainer",
   "description": "Offline-fähiger Prüfungstrainer für Elektroniker/-in Energie- und Gebäudetechnik (GP Teil 2 NRW) mit WiSo, Elektro, Rechentrainer, VDE 0100-600, CAD, SPS & 18 Prüfungen.",
   "lang": "de-DE",
   "dir": "ltr",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "/app/",
+  "scope": "/app/",
   "display": "standalone",
   "orientation": "any",
   "theme_color": "#0f172a",
@@ -14,25 +14,25 @@
   "categories": ["education", "productivity", "utilities"],
   "icons": [
     {
-      "src": "/pwa-192x192.png",
+      "src": "/app/pwa-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/pwa-512x512.png",
+      "src": "/app/pwa-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/pwa-maskable-512x512.png",
+      "src": "/app/pwa-maskable-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/icon.svg",
+      "src": "/app/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
@@ -43,29 +43,29 @@
       "name": "Elektro-Theorie (83)",
       "short_name": "Elektro",
       "description": "Direkt zu den 83 Elektro-Prüfungsfragen starten",
-      "url": "/?tab=elektro-section",
-      "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192", "type": "image/png" }]
+      "url": "/app/?tab=elektro-section",
+      "icons": [{ "src": "/app/pwa-192x192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "NRW-Rechentrainer (25)",
       "short_name": "Rechnen",
       "description": "4-Schritte-Rechenaufgaben mit Lösungsweg",
-      "url": "/?tab=calc-section",
-      "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192", "type": "image/png" }]
+      "url": "/app/?tab=calc-section",
+      "icons": [{ "src": "/app/pwa-192x192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "Prüfprotokoll VDE 0100-600",
       "short_name": "Protokoll",
       "description": "Aufgabe 4.3 Prüfprotokoll-Simulator (70 % Übergabe)",
-      "url": "/?tab=protokoll-section",
-      "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192", "type": "image/png" }]
+      "url": "/app/?tab=protokoll-section",
+      "icons": [{ "src": "/app/pwa-192x192.png", "sizes": "192x192", "type": "image/png" }]
     },
     {
       "name": "18 Original-Prüfungen",
       "short_name": "Prüfungen",
       "description": "Original-Prüfungsarchiv 2018–2025 mit Split-Screen",
-      "url": "/?tab=masterbook-section",
-      "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192", "type": "image/png" }]
+      "url": "/app/?tab=masterbook-section",
+      "icons": [{ "src": "/app/pwa-192x192.png", "sizes": "192x192", "type": "image/png" }]
     }
   ]
 }
